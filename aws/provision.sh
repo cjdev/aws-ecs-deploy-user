@@ -35,7 +35,7 @@ deploy_stack () {
 }
 
 access_key_info () {
-  echo "getting access key info..."
+  echo "Getting access key info..."
 
   # get stack info
   info=$(aws cloudformation describe-stacks \
@@ -44,11 +44,11 @@ access_key_info () {
 
   # get and display access key id
   accessKeyId=$(echo $info | jq -r '.[] | select (.OutputKey=="accessKeyId").OutputValue')
-  echo "accessKeyId: $accessKeyId"
+  echo "AccessKeyId: $accessKeyId"
 
   # get and display secret access key
   secretAccessKey=$(echo $info | jq -r '.[] | select (.OutputKey=="secretAccessKey").OutputValue')
-  echo "secretAccessKey: $secretAccessKey"
+  echo "SecretAccessKey: $secretAccessKey"
 }
 
 # ===============MAIN LOGIC==================
