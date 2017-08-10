@@ -15,20 +15,24 @@ Resources:
     Type: AWS::IAM::User
     Properties:
       Policies:
-      - PolicyName: push-images-to-ecr
+      - PolicyName: jenkins-deploy
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
             Effect: Allow
-            Action: ecr:PutImage
-            Resource: "*"
-
-      - PolicyName: kick-ecs-tasks
-        PolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            Effect: Allow
-            Action: ecs:StopTask
+            Action:
+            - ecr:PutImage
+            - ecr:GetAuthorizationToken
+            - ecr:InitiateLayerUpload
+            - ecr:UploadLayerPart
+            - ecr:CompleteLayerUpload
+            - ecr:BatchCheckLayerAvailability
+            - ecr:PutImage
+            - cloudformation:DescribeStacks
+            - ecs:DescribeTaskDefinition
+            - ecs:StopTask
+            - ecs:RegisterTaskDefinition
+            - ecs:UpdateService
             Resource: "*"
 
   accessKey:
