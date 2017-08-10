@@ -1,6 +1,15 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: AWS Deploy User
 
+Parameters:
+  serial:
+    Type: Number
+    Description: |
+      Incrementing this value notifies AWS CloudFormation that you want to
+      rotate your access key. When you update your stack, AWS CloudFormation
+      will replace the existing access key with a new key.
+    Default: 0
+
 Resources:
   user:
     Type: AWS::IAM::User
@@ -22,7 +31,22 @@ Resources:
             Action: ecs:StopTask
             Resource: "*"
 
+  accessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      Serial: !Ref serial
+      UserName: !Ref user
+
 Outputs:
   userId:
     Description: id of the user with ecs deploy permissions
     Value: !Ref user
+  accessKeyId:
+    Description: access key id for user with ecs deploy permissions
+    Value: !Ref accessKey
+  secretAccessKey:
+    Description: secret access key for user with ecs deploy permissions
+    Value: !GetAtt accessKey.SecretAccessKey
+  accessKeySerial:
+    Description: the access key serial--used if rotating key
+    Value: !Ref serial
