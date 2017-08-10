@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS Deploy User
+
+Resources:
+  user:
+    Type: AWS::IAM::User
+    Properties:
+      Policies:
+      - PolicyName: push-images-to-ecr
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            Effect: Allow
+            Action: ecr:PutImage
+            Resource: "*"
+
+      - PolicyName: kick-ecs-tasks
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            Effect: Allow
+            Action: ecs:StopTask
+            Resource: "*"
+
+Outputs:
+  userId:
+    Description: id of the user with ecs deploy permissions
+    Value: !Ref user
